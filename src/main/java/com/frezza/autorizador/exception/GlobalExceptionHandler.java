@@ -1,6 +1,6 @@
 package com.frezza.autorizador.exception;
 
-import com.frezza.autorizador.persistence.dto.CardDto;
+import com.frezza.autorizador.persistence.dto.CardResponseDto;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +15,17 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception e) {
-        return new ResponseEntity<>("Erro interno do servidor", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(CardNotExistsException.class)
     public ResponseEntity<Object> handleCardNotExistsException(CardNotExistsException e) {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(CardAlreadyExistsException.class)
-    public ResponseEntity<CardDto> handleCardAlreadyExistsException(CardAlreadyExistsException e) {
-        CardDto cardDto = new CardDto();
-        cardDto.setSenha("******");
-        cardDto.setNumeroCartao(e.getMessage());
-        return ResponseEntity.unprocessableEntity().body(cardDto);
+    public ResponseEntity<CardResponseDto> handleCardAlreadyExistsException(CardAlreadyExistsException e) {
+        CardResponseDto response = CardResponseDto.builder()
+                .senha(e.getPassword())
+                .numeroCartao(e.getCardNumber()).build();
+        return ResponseEntity.unprocessableEntity().body(response);
     }
 
     @ExceptionHandler({TransactionException.class})
