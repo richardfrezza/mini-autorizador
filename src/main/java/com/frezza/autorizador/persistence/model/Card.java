@@ -31,7 +31,6 @@ public class Card implements Serializable {
     private BigDecimal balance;
     @Version
     private Integer version;
-
     @Embedded
-    private Audit audit = new Audit();
+    private Audit audit;
 }
