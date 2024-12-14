@@ -15,6 +15,4 @@ public interface CardRepository extends JpaRepository<Card, Integer> {
    @Query("SELECT c.balance FROM Card c WHERE c.number = :number")
    Optional<BigDecimal> findBalanceByNumber(@Param("number") String number);
 
-   boolean existsByNumber(String number);
-
 }
