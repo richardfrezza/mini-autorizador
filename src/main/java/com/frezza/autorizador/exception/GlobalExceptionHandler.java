@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({StaleObjectStateException.class})
     public ResponseEntity<String> handleStaleObjectStateException(StaleObjectStateException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um falha na transação, tente mais tarde");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um falha na transação, tente mais tarde!");
     }
 
 }

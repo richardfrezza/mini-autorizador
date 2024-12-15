@@ -1,5 +1,6 @@
 package com.frezza.autorizador.service;
 
+import com.frezza.autorizador.exception.TransactionException;
 import com.frezza.autorizador.persistence.dto.TransactionDto;
 import com.frezza.autorizador.persistence.model.Card;
 import com.frezza.autorizador.persistence.repository.CardRepository;
@@ -23,12 +24,20 @@ public class TransactionService {
     private final CardRepository cardRepository;
 
     @Transactional
-    @Retryable(retryFor = StaleObjectStateException.class, backoff = @Backoff(delay = 200))
+    @Retryable(retryFor = StaleObjectStateException.class, backoff = @Backoff(delay = 500))
     public void handleTransaction(TransactionDto transactionDto) {
-        Card card = getCardByNumber(transactionDto.getNumeroCartao());
-        validateTransactionChain(transactionDto, card);
-        decreaseBalance(transactionDto, card);
-        cardRepository.save(card);
+        try {
+            Card card = getCardByNumber(transactionDto.getNumeroCartao());
+            validateTransactionChain(transactionDto, card);
+            decreaseBalance(transactionDto, card);
+            cardRepository.save(card);
+        } catch (TransactionException e) {
+            log.warn("Transaction warn: Não foi possível realizar a transação: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("Transaction error: Erro ao realizar a transação: {}", e.getMessage(), e);
+            throw new TransactionException("Erro inesperado ao realizar a transação!" + e.getMessage());
+        }
     }
 
     private Card getCardByNumber(String numberCard) {
