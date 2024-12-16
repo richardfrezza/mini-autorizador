@@ -110,6 +110,12 @@
 			<version>2.0.10</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>  <!-- Use 'runtime' para garantir que está disponível no ambiente de execução -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
