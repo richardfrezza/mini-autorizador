@@ -3,7 +3,6 @@ package com.frezza.autorizador.utils;
 import com.frezza.autorizador.persistence.dto.CardDto;
 import com.frezza.autorizador.persistence.dto.TransactionDto;
 import com.frezza.autorizador.persistence.model.Card;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 
@@ -20,7 +19,7 @@ public class Models {
         Card card = new Card();
         card.setNumber("9999999999999999");
         card.setPassword("admin");
-        card.setBalance(BigDecimal.valueOf(500.00));
+        card.setBalance(new BigDecimal("500.00"));
         return card;
     }
 
