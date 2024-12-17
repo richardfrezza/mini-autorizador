@@ -8,7 +8,6 @@ import com.frezza.autorizador.persistence.mapper.CardMapper;
 import com.frezza.autorizador.persistence.model.Card;
 import com.frezza.autorizador.persistence.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class CardService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final CardMapper mapper;
 
-    @Value("${card.balance.initial}")
+    @Value("${CARD_BALANCE_INITIAL:500}")
     private BigDecimal balanceInitial;
 
     @Transactional
